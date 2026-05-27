@@ -1,0 +1,136 @@
+/* Add Asset Page Styles */
+
+/* Page Background */
+body {
+  font-family: Arial, sans-serif;
+  background: url('/static/factory/images/loginimg.jpg') no-repeat center center/cover;
+  background-size: cover; /* full screen */
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* top-aligned for form */
+  padding-top: 50px; /* space for back button/header */
+}
+/* Container */
+.add-asset-container {
+  max-width: 700px;
+  width: 120%;
+  padding: 25px;
+  background: rgba(255,255,255,0.95); /* slightly transparent for readability */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 10;
+}
+
+/* Back Button */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: inline-block;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.back-button img {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.2s ease;
+}
+
+.back-button img:hover {
+  transform: scale(1.1);
+}
+
+/* Header */
+.page-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #27ae60; /* green */
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  margin-bottom: 10px;
+}
+
+.page-header p.muted {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.asset-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.asset-form label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #2c3e50;
+}
+
+.asset-form input,
+.asset-form select {
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.asset-form input:focus,
+.asset-form select:focus {
+  border-color: #2ecc71;  /* green highlight */
+  box-shadow: 0 0 6px rgba(46,204,113,0.3);
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.col {
+  flex: 1;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+#submitBtn {
+  flex: 1;
+  background-color: #2ecc71;  /* green button */
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#submitBtn:hover {
+  background-color: #27ae60;
+}
+
+#cancelBtn {
+  flex: 1;
+  background-color: #e74c3c;  /* red button */
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#cancelBtn:hover {
+  background-color: #c0392b;
+}

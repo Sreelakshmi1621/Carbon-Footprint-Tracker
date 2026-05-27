@@ -1,0 +1,160 @@
+/* Overall Layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Form Section */
+.form-section {
+    flex: 0.8; /* kuranju size */
+    background-color: white;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+/* Vertical Line effect starting from R to r */
+.form-section::before {
+    content: "";
+    position: absolute;
+    top: 60px; /* Register headinginte thazhe start */
+    left: 10px; /* Capital R muthal */
+    width: calc(100% - 20px);
+    height: calc(100% - 120px);
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+/* Heading */
+.form-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 5px;
+    z-index: 1;
+    position: relative;
+    background-color: white;
+    display: inline-block;
+    padding: 0 10px;
+}
+
+/* Subheading */
+.form-section p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #555;
+    position: relative;
+    z-index: 1;
+}
+
+/* Inputs */
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 8px 12px;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.input-group i {
+    margin-right: 10px;
+    color: #666;
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+}
+
+/* Button */
+button {
+    background-color: #2bbbad;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+button:hover {
+    background-color: #249e91;
+}
+
+/* Login Link */
+.login-link {
+    text-align: left;
+    font-size: 14px;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.login-link a {
+    color: #2bbbad;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    font-size: 12px;
+    margin-top: 20px;
+    color: #777;
+    position: relative;
+    z-index: 1;
+}
+
+/* Image Section */
+.image-section {
+    flex: 1;
+    background-color: #eee;
+}
+
+.image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Success and Error Messages */
+.messages {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

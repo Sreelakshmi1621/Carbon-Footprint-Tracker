@@ -1,0 +1,148 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Factories - Admin Dashboard</title>
+  <link rel="stylesheet" href="{% static 'factory/css/manage_factories.css' %}">
+</head>
+<body>
+  <!-- 🔙 Back Button -->
+  <a href="{% url 'admin_dashboard' %}" class="back-btn">
+    <img src="{% static 'factory/images/homepic.png' %}" alt="Back" />
+  </a>
+
+  <div class="main-content">
+    <!-- Header Row -->
+    <div class="header-row">
+      <h2>Manage Factories</h2>
+      <div>
+        <!-- Search Bar -->
+        <input type="text" id="searchInput" placeholder="Search factories...">
+        <!-- Filter Dropdown -->
+        <select id="filterType">
+          <option value="">All Types</option>
+          {% for type in factory_types %}
+            <option value="{{ type }}">{{ type }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- Factories Table -->
+    <table class="factories-table" id="factoriesTable">
+      <thead>
+        <tr>
+          <th>Factory Name</th>
+          <th>License Number</th>
+          <th>Industry Type</th>
+          <th>Contact</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for factory in factories %}
+        <tr>
+          <td>{{ factory.name }}</td>
+          <td>{{ factory.registration_number }}</td>
+          <td>{{ factory.factory_type }}</td>
+          <td>{{ factory.phone_number }}</td>
+          <td>
+            <button class="view-btn"
+                    data-name="{{ factory.name }}"
+                    data-registration="{{ factory.registration_number }}"
+                    data-type="{{ factory.factory_type }}"
+                    data-location="{{ factory.city }}, {{ factory.country }}"
+                    data-contact="{{ factory.phone_number }}"
+                    data-email="{{ factory.email }}">
+              View
+            </button>
+            <form method="POST" action="{% url 'delete_factory' factory.id %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="delete-btn">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" style="text-align:center;">No factories found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal for View Details -->
+  <div id="factoryModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Factory Name</h3>
+        <span class="close-btn">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p><strong>License Number:</strong> <span id="modalLicense"></span></p>
+        <p><strong>Industry Type:</strong> <span id="modalType"></span></p>
+        <p><strong>Location:</strong> <span id="modalLocation"></span></p>
+        <p><strong>Contact Number:</strong> <span id="modalContact"></span></p>
+        <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modal elements
+    const modal = document.getElementById("factoryModal");
+    const closeBtn = document.querySelector(".close-btn");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalLicense = document.getElementById("modalLicense");
+    const modalType = document.getElementById("modalType");
+    const modalLocation = document.getElementById("modalLocation");
+    const modalContact = document.getElementById("modalContact");
+    const modalEmail = document.getElementById("modalEmail");
+
+    // View button click
+    document.querySelectorAll(".view-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        modalTitle.textContent = button.dataset.name;
+        modalLicense.textContent = button.dataset.registration;
+        modalType.textContent = button.dataset.type;
+        modalLocation.textContent = button.dataset.location;
+        modalContact.textContent = button.dataset.contact;
+        modalEmail.textContent = button.dataset.email;
+        modal.style.display = "block";
+      });
+    });
+
+    // Close modal
+    closeBtn.onclick = () => modal.style.display = "none";
+    window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
+
+    // Search functionality
+    const searchInput = document.getElementById("searchInput");
+    const filterType = document.getElementById("filterType");
+
+    function filterTable() {
+      const filter = searchInput.value.toLowerCase();
+      const typeFilter = filterType.value.toLowerCase();
+      const rows = document.querySelectorAll("#factoriesTable tbody tr");
+
+      rows.forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const reg = row.cells[1].textContent.toLowerCase();
+        const type = row.cells[2].textContent.toLowerCase();
+        const phone = row.cells[3].textContent.toLowerCase();
+
+        const matchesSearch = name.includes(filter) || reg.includes(filter) || phone.includes(filter);
+        const matchesType = typeFilter === "" || type === typeFilter;
+
+        row.style.display = (matchesSearch && matchesType) ? "" : "none";
+      });
+    }
+
+    searchInput.addEventListener("keyup", filterTable);
+    filterType.addEventListener("change", filterTable);
+  </script>
+</body>
+</html>

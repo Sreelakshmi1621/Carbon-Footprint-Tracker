@@ -1,0 +1,200 @@
+{% load static %}
+{% load humanize %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factory Dashboard</title>
+  <link rel="stylesheet" href="{% static 'factory/css/factory_dashboard.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <img src="{% static 'factory/images/logo.png' %}" alt="Logo" class="header-logo">
+      <h1 class="header-title">Carbon Footprint Tracker</h1>
+    </div>
+    <div class="header-right">
+      <a href="{% url 'login' %}" class="home-icon"><i class="fa-solid fa-house"></i></a>
+<div class="notification-icon">
+  <a href="{% url 'notifications' %}"><i class="fa-solid fa-bell"></i></a>
+  {% if unread_notifications > 0 %}
+    <span class="notification-badge">{{ unread_notifications }}</span>
+  {% endif %}
+</div>
+<div class="user-profile-dropdown">
+<img src="{% if factory.profile_picture %}{{ factory.profile_picture.url }}{% else %}{% static 'factory/images/default_profile.png' %}{% endif %}" 
+     alt="Profile Pic" class="header-profile-pic">
+
+    <div class="dropdown-content">
+        <a href="{% url 'factory_profile' factory.id %}">View Profile</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+<aside class="sidebar">
+  <ul class="menu">
+    <li><a href="javascript:void(0)" onclick="showSection('overview')">📊 Overview</a></li>
+    <li><a href="{% url 'add_asset' %}">➕ Add Asset</a></li>
+    <li><a href="{% url 'add_usage' %}">📝 Add Usage</a></li>
+    <li><a href="{% url 'reports' %}">📈 Reports</a></li>
+    <li><a href="{% url 'notifications' %}">🔔 Notifications</a></li>
+    <li><a href="{% url 'factory_profile' factory.id %}">🏭 Factory Profile</a></li>
+    <li><a href="{% url 'change_password' %}">🔒 Change Password</a></li>
+  </ul>
+
+  <div class="account-management">
+  <a href="{% url 'account_management' %}"><i class="fa-solid fa-user-cog"></i> Account Management</a>
+  </div>
+</aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Welcome Card -->
+    <div id="overview" class="dashboard-section">
+      <div class="welcome-card">
+         <h2>Welcome, <span id="factoryName">{{ factory.name }}</span>!</h2>
+        <p>Here's an overview of your factory's emissions and activities.</p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-cards">
+        <div class="card total-assets">
+          <div class="card-icon">⚙️</div>
+          <div class="card-info">
+            <h3>Total Assets</h3>
+             <p id="totalAssets">{{ total_assets }}</p>
+          </div>
+        </div>
+        <div class="card total-emissions">
+          <div class="card-icon">📊</div>
+          <div class="card-info">
+            <h3>Total Emissions</h3>
+              <p id="totalEmissions">{{ total_emissions }} kg CO₂</p>
+          </div>
+        </div>
+        <div class="card monthly-average">
+          <div class="card-icon">📈</div>
+          <div class="card-info">
+            <h3>Monthly Average</h3>
+            <p id="monthlyAverage">0 kg CO₂</p>
+          </div>
+        </div>
+        <div class="card compliance-status">
+          <div class="card-icon">✅</div>
+          <div class="card-info">
+            <h3>Compliance Status</h3>
+            <p id="complianceStatus">Good</p>
+          </div>
+        </div>
+      </div>
+
+ <!-- Recent Activity -->
+<div class="recent-activity">
+  <h2>Recent Activity</h2>
+  <div class="activity-list">
+    {% for activity in recent_activity %}
+      <div class="activity-item">
+        <span class="activity-icon">
+          {% if activity.type == 'asset' %}⚙️
+          {% elif activity.type == 'usage' %}⚡
+          {% elif activity.type == 'notification' %}🔔
+          {% elif activity.type == 'report' %}📈
+          {% else %} ℹ️
+          {% endif %}
+        </span>
+        <span class="activity-text">
+          {% if activity.type == 'asset' %}
+            Asset "{{ activity.name }}" emissions recorded
+          {% elif activity.type == 'usage' %}
+            Usage for "{{ activity.name }}" logged
+          {% elif activity.type == 'notification' %}
+            Notification: "{{ activity.name }}"
+          {% endif %}
+        </span>
+        <span class="activity-time">{{ activity.timestamp|naturaltime }}</span>
+      </div>
+    {% empty %}
+      <div class="activity-item">
+        No recent activity
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+      <!-- CO2 Trend Chart -->
+      <div class="co2-trend">
+        <h2>CO₂ Trend</h2>
+        <canvas id="co2Chart" height="100"></canvas>
+      </div>
+    </section>
+    <!-- Pass data safely from Django to JS -->
+    {{ chart_labels|json_script:"chart-labels" }}
+    {{ chart_data|json_script:"chart-data" }}
+
+    <!-- Other sections placeholders -->
+    <section id="addAsset" class="dashboard-section hidden">Add Asset Form Here</section>
+    <section id="addUsage" class="dashboard-section hidden">Add Usage Form Here</section>
+    <section id="reports" class="dashboard-section hidden">Reports Table Here</section>
+    <section id="notifications" class="dashboard-section hidden">Notifications List Here</section>
+    <section id="profile" class="dashboard-section hidden">Factory Profile Form Here</section>
+    <section id="changePassword" class="dashboard-section hidden">Change Password Form Here</section>
+
+  </div>
+
+  <!-- Chart.js Script -->
+  <script>
+  const ctx = document.getElementById('co2Chart').getContext('2d');
+
+  const labels = JSON.parse(document.getElementById('chart-labels').textContent);
+  const data = JSON.parse(document.getElementById('chart-data').textContent);
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'CO₂ Emissions (kg)',
+        data: data,
+        backgroundColor: '#8fa31e',
+        borderRadius: 6,
+        maxBarThickness: 50
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true },
+        x: { beginAtZero: true }
+      }
+    }
+  });
+
+    // Profile Dropdown
+    const profileDropdown = document.querySelector('.user-profile-dropdown');
+    const dropdown = profileDropdown.querySelector('.dropdown-content');
+    profileDropdown.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.toggle('show');
+    });
+    document.addEventListener('click', () => { dropdown.classList.remove('show'); });
+
+    // Section Navigation
+    function showSection(id) {
+      document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+    <link rel="stylesheet" href="{% static 'factory/css/admin_profile.css' %}">
+</head>
+<body>
+
+    <!-- Back Button -->
+    <button id="back-button" data-url="{% url 'admin_dashboard' %}">
+        <img src="{% static 'factory/images/homepic.png' %}" alt="Back">
+    </button>
+
+    <!-- Profile Form -->
+    <form id="admin-profile-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+            <!-- Display Messages -->
+    {% if messages %}
+        <ul class="message-list">
+            {% for message in messages %}
+                <li class="{% if message.tags == 'error' %}error-msg{% else %}success-msg{% endif %}">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+        <!-- Profile Picture -->
+        <div class="profile-pic-container">
+            {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" id="profile-pic">
+            {% else %}
+                <img src="{% static 'factory/images/placeholder.png' %}" alt="Profile Picture" id="profile-pic">
+            {% endif %}
+            <label for="profile-upload" class="upload-icon">&#9998;</label>
+            <input type="file" name="profile_picture" id="profile-upload" accept="image/*">
+        </div>
+
+        <!-- Name -->
+        <label for="admin-name">Name:</label>
+        <input type="text" name="name" id="admin-name" value="{{ profile.name }}">
+
+        <!-- Email (Read-only) -->
+        <label for="admin-email">Email:</label>
+        <input type="email" id="admin-email" value="{{ user_obj.email }}" readonly>
+
+        <!-- Password Change -->
+        <label for="old-password">Old Password:</label>
+        <input type="password" name="old_password" id="old-password" placeholder="Old Password">
+
+        <label for="new-password">New Password:</label>
+        <input type="password" name="new_password" id="new-password" placeholder="New Password">
+
+        <label for="confirm-password">Confirm New Password:</label>
+        <input type="password" name="confirm_password" id="confirm-password" placeholder="Confirm New Password">
+
+        <button type="submit" id="save-btn">Save Changes</button>
+    </form>
+
+
+    <script>
+        // Back button redirect
+        document.getElementById("back-button").addEventListener("click", function() {
+            window.location.href = this.getAttribute("data-url");
+        });
+
+        // Profile picture preview
+        document.getElementById("profile-upload").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById("profile-pic").src = URL.createObjectURL(file);
+            }
+        });
+    </script>
+
+</body>
+</html>

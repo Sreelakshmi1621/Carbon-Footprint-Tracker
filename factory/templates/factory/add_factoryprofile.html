@@ -1,0 +1,75 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Factory Profile</title>
+    <!-- Link CSS file (will be created separately) -->
+    <link rel="stylesheet" href="{% static 'factory/css/add_factoryprofile.css' %}">
+</head>
+<body>
+
+    <!-- Back Image (top-left) -->
+<a href="{% url 'login' %}" class="back-link">
+    <img src="{% static 'factory/images/homepic.png' %}" alt="Back to Dashboard" class="back-image">
+</a>
+
+    <div class="form-container">
+        <h2>Add Factory Profile</h2>
+       <form action="{% url 'add_factoryprofile' %}" method="post">
+         {% csrf_token %}
+            
+            <label for="factoryName">Factory Name:</label>
+            <input type="text" id="factoryName" name="factoryName" required>
+
+<label for="factoryType">Factory Type:</label>
+<select id="factoryType" name="factoryType" required>
+    <option value="" disabled selected>Select Factory Type</option>
+    <option value="Textile / Garment">Textile / Garment</option>
+    <option value="Cement / Concrete">Cement / Concrete</option>
+    <option value="Steel / Metal Processing">Steel / Metal Processing</option>
+    <option value="Chemical / Pharmaceutical">Chemical / Pharmaceutical</option>
+    <option value="Plastic / Polymer">Plastic / Polymer</option>
+    <option value="Electronics / Electrical">Electronics / Electrical</option>
+    <option value="Food Processing">Food Processing</option>
+    <option value="Beverage / Brewery">Beverage / Brewery</option>
+    <option value="Power Plant">Power Plant</option>
+    <option value="Oil & Gas Refinery">Oil & Gas Refinery</option>
+    <option value="Paper & Pulp">Paper & Pulp</option>
+    <option value="Automobile / Vehicle Assembly">Automobile / Vehicle Assembly</option>
+    <option value="Furniture / Wood Products">Furniture / Wood Products</option>
+    <option value="Other">Other</option>
+</select>
+
+            <label for="regNumber">Registration/License Number:</label>
+            <input type="text" id="regNumber" name="regNumber" required>
+
+            <label for="estYear">Established Year:</label>
+            <input type="number" id="estYear" name="estYear" required>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" rows="3" required></textarea>
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ request.user.email }}" readonly>
+
+            <div class="button-group">
+                <button type="submit">Save and Continue</button>
+                <a href="{% url 'login' %}" class="cancel-btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

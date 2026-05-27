@@ -1,0 +1,168 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports — Factory Owner</title>
+
+  <!-- Shared dashboard styles -->
+  <link rel="stylesheet" href="{% static 'factory/css/factory_dashboard.css' %}">
+
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="{% static 'factory/css/reports.css' %}">
+</head>
+<body>
+  <main class="main-area">
+
+    <!-- Back button floating over background -->
+    <a href="{% url 'factory_dashboard' %}" class="back-btn">
+      <img src="{% static 'factory/images/homepic.png' %}" alt="Back" />
+    </a>
+
+    <!-- Report Section Container -->
+    <div class="reports-container">
+
+      <!-- Header -->
+      <header class="page-header">
+        <h1>Emission Reports</h1>
+        <p class="muted">Select a date range to generate your emission report.</p>
+      </header>
+
+      <!-- Filters -->
+      <div class="filters">
+        <div>
+          <label for="fromDate">From</label>
+          <input type="date" id="fromDate">
+        </div>
+        <div>
+          <label for="toDate">To</label>
+          <input type="date" id="toDate">
+        </div>
+        <div style="align-self: flex-end;">
+          <button id="generateBtn">Generate</button>
+        </div>
+      </div>
+
+      <!-- Table wrapper (scrollable) -->
+      <div class="table-wrapper">
+        <table id="reportTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Asset Name (Type)</th>
+              <th>Fuel / Energy</th>
+              <th>Consumption</th>
+              <th>Unit</th>
+              <th>CO₂ Emissions (kg)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dynamic rows will appear here -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" style="text-align:right; font-weight:bold;">Total Emissions:</td>
+              <td id="totalEmissions">—</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="summary-cards" id="summaryCards" style="display:none;">
+        <div class="card total-emission">
+          <p class="amount" id="totalCO2">— kg</p>
+          <p class="label">Total CO₂ Emissions</p>
+        </div>
+        <div class="card avg-daily">
+          <p class="amount" id="avgDaily">— kg/day</p>
+          <p class="label">Average Daily</p>
+        </div>
+        <div class="card reduction">
+          <p class="amount" id="reductionPct">—%</p>
+          <p class="label">Reduction vs Last Period</p>
+        </div>
+      </div>
+
+      <!-- No data message -->
+      <p id="noDataMsg" class="muted">No assets available. Add assets first from the Add Asset page.</p>
+
+    </div>
+  </main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const generateBtn = document.getElementById('generateBtn');
+    const reportTable = document.getElementById('reportTable');
+    const tbody = reportTable.querySelector('tbody');
+    const summaryCards = document.getElementById('summaryCards');
+    const noDataMsg = document.getElementById('noDataMsg');
+    const totalEmissionsEl = document.getElementById('totalEmissions');
+    const totalCO2El = document.getElementById('totalCO2');
+    const avgDailyEl = document.getElementById('avgDaily');
+    const reductionPctEl = document.getElementById('reductionPct');
+
+    // Initially hide table and summary cards
+    reportTable.style.display = "none";
+    summaryCards.style.display = "none";
+    noDataMsg.style.display = "block";
+
+    generateBtn.addEventListener('click', function () {
+        const fromDate = document.getElementById('fromDate').value;
+        const toDate = document.getElementById('toDate').value;
+
+        if (!fromDate || !toDate) {
+            alert("Please select both dates.");
+            return;
+        }
+
+        // Fetch JSON data from backend API
+        fetch(`/api/reports/?start_date=${fromDate}&end_date=${toDate}`)
+            .then(response => response.json())
+            .then(data => {
+                tbody.innerHTML = ""; // Clear previous rows
+
+                if (data.data.length === 0) {
+                    reportTable.style.display = "none";
+                    summaryCards.style.display = "none";
+                    noDataMsg.style.display = "block";
+                    noDataMsg.innerText = "No data found for selected date range.";
+                    return;
+                }
+
+                noDataMsg.style.display = "none";
+                reportTable.style.display = "table";
+                summaryCards.style.display = "flex";
+
+                // Populate table
+                data.data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.date}</td>
+                        <td>${row.asset} (${row.asset_type})</td>
+                        <td>${row.fuel_type}</td>
+                        <td>${row.usage_amount}</td>
+                        <td>${row.unit || '—'}</td>
+                        <td>${row.emission}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Update summary cards
+                totalEmissionsEl.innerText = data.total_emission;
+                totalCO2El.innerText = `${data.total_emission} kg`;
+                avgDailyEl.innerText = Math.round(data.total_emission / (data.count || 1)) + " kg/day";
+                reductionPctEl.innerText = "—%";
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Error fetching report data.");
+            });
+    });
+});
+</script>
+</body>
+</html>

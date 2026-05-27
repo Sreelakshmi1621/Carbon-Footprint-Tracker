@@ -1,0 +1,339 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Tracker</title>
+    <link rel="stylesheet" href="{% static 'factory/css/home.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <div class="logo">
+            <img src="{% static 'factory/images/logo.png' %}" alt="SVG Logo">
+            <span>CARBON FOOTPRINT TRACKER</span>
+        </div>
+        <nav>
+            <ul>
+                 <li><a href="#hero">Home</a></li>
+                 <li><a href="#about">About</a></li>
+                 <li><a href="#impact">Impact</a></li>
+                 <li><a href="#contact">Contact</a></li>
+                 <li><a href="{% url 'login' %}" class="btn">Login</a></li>
+                 <li><a href="{% url 'register' %}" class="signup-btn">Signup</a></li>
+
+
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Home Section -->
+     <section id="hero" class="hero">
+        <div class="hero-content">
+            <h1>Track, Reduce, and Report Your Factory's Carbon Emissions</h1>
+            <p>Monitor your factory’s carbon footprint with precision, get actionable insights, and contribute to a sustainable future.</p>
+            <a href="{% url 'login' %}" class="btn">Get Started</a>
+        </div>
+    </section>
+    <!-- About the System Section -->
+     <!-- About / Features preview (place after hero section) -->
+
+<section id="about" class="about-section">
+    <div class="container">
+        <h2>About the Carbon Footprint Tracker</h2>
+        <p>
+            Our system helps factories monitor, analyze, and reduce carbon emissions. 
+            With real-time tracking and actionable insights, you can take effective steps 
+            toward a greener and more sustainable future.
+        </p>
+    </div>
+</section>
+
+    <div class="cards">
+      <article class="card">
+        <div class="card-media">
+          <img src="{% static 'factory/images/about1.jpg' %}" alt="Emission Calculator">
+          <span class="card-icon">📄</span>
+        </div>
+        <div class="card-body">
+          <h3>Emission Calculator</h3>
+          <p>Calculate carbon emissions from fuel consumption, electricity usage, and more with simple inputs.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <img src="{% static 'factory/images/about2.jpg' %}" alt="Emission Tracking">
+          <span class="card-icon">✔️</span>
+        </div>
+        <div class="card-body">
+          <h3>Emission Tracking</h3>
+          <p>Real-time monitoring of CO₂ emissions across your factory processes for accurate records.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <img src="{% static 'factory/images/about3.jpg' %}" alt="Automatic Reports">
+          <span class="card-icon">📊</span>
+        </div>
+        <div class="card-body">
+          <h3>Automatic Reports</h3>
+          <p>Generate detailed compliance reports automatically for regulators or internal review.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <img src="{% static 'factory/images/about4.jpg' %}" alt="Tips and Alerts">
+          <span class="card-icon">i</span>
+        </div>
+        <div class="card-body">
+          <h3>Tips & Alerts</h3>
+          <p>Receive smart recommendations and instant alerts to optimize your carbon reduction efforts.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<!-- IMPACT SECTION (paste right after the About section) -->
+<section id="impact" class="impact-section">
+  <div class="impact-container">
+
+    <div class="impact-header">
+      <h2>The Critical Impact of CO₂ on Our Environment</h2>
+      <p class="impact-lead">Understanding the urgent need for industrial carbon footprint management.</p>
+    </div>
+
+    <!-- two-column area: left = consequences, right = chart card -->
+    <div class="impact-two-columns">
+      <div class="impact-left">
+        <div class="climate-consequences">
+                <h3>Climate Change Consequences</h3>
+        <div class="consequence-item">
+        <div class="icon-box"><i class="fas fa-temperature-high"></i></div>
+          <div class="text-box">
+                    <h3>Rising Global Temperatures</h3>
+              <p>CO₂ traps heat in the atmosphere, causing global temperatures to rise since pre-industrial times.</p>
+            </div>
+           </div>
+          
+           <div class="consequence-item">
+           <div class="icon-box"><i class="fas fa-star"></i></div>
+           <div class="text-box">
+              <h3>Extreme Weather Events</h3>
+              <p>Increased frequency of storms, droughts and floods affecting communities worldwide.</p>
+            </div>
+          </div>
+
+         <div class="consequence-item">
+        <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+        <div class="text-box">
+           <h4>Sea Level Rise</h4>
+           <p>Melting ice caps and thermal expansion threaten coastal cities and island nations globally.</p>
+        </div>
+      </div>
+     </div>
+     </div>
+      <div class="impact-right">
+        <div class="chart-card">
+          <!-- put a real chart image or canvas here later -->
+              <canvas id="co2Chart" width="500" height="400"></canvas>
+              <p class="chart-label">421 ppm — Highest CO₂ levels in 3 million years</p>
+        </div>
+      </div>
+    </div>
+    <!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Chart.js Data Labels Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script>
+if (window.co2ChartInstance) {
+  try { window.co2ChartInstance.destroy(); } catch(e) {}
+}
+
+const ctx = document.getElementById('co2Chart').getContext('2d');
+
+window.co2ChartInstance = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['2018','2019','2020','2021','2022','2023','2024'],
+datasets: [{
+    label: ' CO₂ Levels (ppm)',
+    data: [315, 320, 330, 350, 370, 390, 410, 420],
+    borderColor: '#ff4d4d',
+    backgroundColor: 'rgba(255, 77, 77, 0.2)',
+    fill: true,
+    tension: 0.3,
+    borderWidth: 2,  // <-- Reduce line thickness here
+    pointRadius: 4,  // <-- Adjust point size
+    pointBackgroundColor: '#ff4d4d'
+}]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false, /* chart will fit parent height; we'll set parent height in CSS later */
+    plugins: {
+      title: {
+        display: true,
+        text: 'Atmospheric CO₂ Levels Over Time',
+        color: '#8B1C1C',
+        font: { size: 18, weight: '700' }
+      },
+      legend: {
+        display: false
+      },
+      datalabels: {
+        color: '#8B1C1C',
+        font: { weight: '700' },
+        formatter: function(value, ctx) {
+          // show label only on the LAST point to highlight it
+          if (ctx.dataIndex === ctx.dataset.data.length - 1) return value;
+          return '';
+        },
+        anchor: 'end',
+        align: 'end'
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          color: 'rgba(139,28,28,0.04)'
+        },
+        ticks: {
+          color: '#444'
+        }
+      },
+      y: {
+        beginAtZero: false,
+        grid: {
+          color: 'rgba(139,28,28,0.04)'
+        },
+        ticks: {
+          color: '#444'
+        }
+      }
+    },
+    elements: {
+      line: {
+        borderJoinStyle: 'round'
+      }
+    }
+  },
+  plugins: [ ChartDataLabels ]
+});
+</script>
+
+
+    <!-- three small highlight cards row (we'll style next) -->
+    <div class="impact-cards-row">
+      <div class="impact-card"> 
+          <i class="fas fa-water impact-icon"></i>
+          <h4>Ocean Acidification</h4>
+        <p>Acidification threatens marine ecosystems and food chains.</p>
+      </div>
+
+      <div class="impact-card">
+        <i class="fas fa-dove impact-icon"></i>
+        <h4>Biodiversity Loss</h4>
+        <p>Extinction rates increase and many species are at risk.</p>
+      </div>
+
+      <div class="impact-card">
+          <i class="fas fa-seedling impact-icon"></i>
+        <h4>Food Security</h4>
+        <p>Crop yields decline, threatening food supply in many regions.</p>
+      </div>
+    </div>
+
+    <!-- big CTA box (will style later) -->
+    <div class="impact-cta">
+      <h3>Industrial Action is Critical</h3>
+      <p>Manufacturing and industrial processes account for 21% of global CO₂ emissions. Every factory that tracks and reduces emissions makes a measurable difference in fighting climate change.</p>
+      <a href="{% url 'login' %}" class="impact-cta-btn">Start Tracking Your Impact</a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section (Making a Real Impact) -->
+<section class="stats-section">
+    <h2>Making a Real Impact</h2>
+    <p>Join thousands of factories already reducing their carbon footprint</p>
+
+    <!-- Container for the 3 stat cards -->
+    <div class="stats-container">
+
+        <!-- Card 1 -->
+        <div class="stat-card">
+            <div class="icon-circle"><i class="fas fa-leaf"></i></div>
+            <h3>2.4M</h3>
+            <p class="stat-title">Tons CO₂ Saved</p>
+            <p class="stat-sub">Equivalent to planting 54,000 trees</p>
+            <div class="progress-bar"><div style="width: 80%;"></div></div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="stat-card">
+            <div class="icon-circle"><i class="fas fa-industry"></i></div>
+            <h3>1,247</h3>
+            <p class="stat-title">Factories Monitored</p>
+            <p class="stat-sub">Across 45 countries worldwide</p>
+            <div class="progress-bar"><div style="width: 70%;"></div></div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="stat-card">
+            <div class="icon-circle"><i class="fas fa-file-alt"></i></div>
+            <h3>15,892</h3>
+            <p class="stat-title">Reports Generated</p>
+            <p class="stat-sub">Helping meet compliance standards</p>
+            <div class="progress-bar"><div style="width: 90%;"></div></div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Contact Section -->
+<!-- Footer Section -->
+<footer id="contact" class="footer">
+  <div class="footer-container">
+    <!-- Left Side -->
+    <div class="footer-left">
+      <div class="footer-logo">
+        <img src="{% static 'factory/images/logo.png' %}" alt="Logo" class="footer-logo-img">
+        Carbon Footprint Tracker
+      </div>
+      <p class="footer-desc">
+      Leading the way in industrial carbon footprint management.<br>
+        Track, reduce, and report your emissions with precision and ease.
+      </p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="footer-contact">
+      <h3>Contact Info</h3>
+      <p><i class="fas fa-map-marker-alt"></i> 123 Green Street, Eco City, Kerala</p>
+      <p><i class="fas fa-envelope"></i> contact:trackercarbonfootprint@gmail.com</p>
+      <p><i class="fas fa-phone"></i> +91 6282139081</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Carbon Footprint Tracker. All rights reserved. | Helping industries build a sustainable future.
+  </div>
+</footer>

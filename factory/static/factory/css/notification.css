@@ -1,0 +1,201 @@
+/* ============================= */
+/* Notification Page Styles       */
+/* ============================= */
+
+/* Full page layout with background */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: url('../images/loginimg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  box-sizing: border-box;
+}
+
+/* Main content container */
+.notification-area {
+  max-width: 900px;
+  margin: 80px auto 40px auto; /* leave top space for back button */
+  padding: 30px 25px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* Page header */
+.notification-area header h1 {
+  text-align: center;
+  color: #27ae60;
+  font-size: 32px;
+  margin-bottom: 5px;
+}
+.notification-area header p.muted {
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Filters section */
+.filters {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.filters button {
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  margin: 3px;
+  transition: background 0.2s ease;
+}
+.filters button:hover {
+  background: #1e8449;
+}
+
+/* Notification list */
+.notification-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual notification */
+.notification {
+  background: #fdfdfd;
+  border-left: 5px solid #ccc;
+  border-radius: 10px;
+  padding: 15px 15px 15px 20px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.notification:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* Priority colors */
+.notification.high-priority {
+  border-left-color: #c0392b;
+}
+.notification.medium-priority {
+  border-left-color: #f39c12;
+}
+.notification.low-priority {
+  border-left-color: #27ae60;
+}
+
+/* Card header: icon + title + label */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.card-header .icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+.card-header .title {
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1;
+}
+.card-header .priority-label {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #eee;
+  text-transform: capitalize;
+}
+
+/* Notification message */
+.notification .message {
+  font-size: 14px;
+  color: #333;
+  margin: 5px 0 8px 0;
+  word-wrap: break-word;
+}
+
+/* Time label */
+.notification .time {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Delete button */
+.delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  line-height: 16px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+.delete-btn:hover {
+  opacity: 1;
+}
+
+/* Unread notification bold */
+.notification.unread .title {
+  font-weight: 700;
+}
+.notification.unread .message {
+  font-weight: 500;
+}
+
+/* Back button */
+.back-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 100;
+}
+.back-btn img {
+  width: 38px;
+  height: 38px;
+  transition: transform 0.2s ease;
+}
+.back-btn img:hover {
+  transform: scale(1.1);
+}
+
+/* No notifications message */
+.notification-list p.muted {
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .notification-area {
+    margin: 60px 15px 20px 15px;
+    padding: 20px 15px;
+  }
+  .card-header .title {
+    font-size: 14px;
+  }
+  .filters button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}

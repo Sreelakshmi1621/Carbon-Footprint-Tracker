@@ -1,0 +1,98 @@
+/* === Account Management Page === */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url('../images/loginimg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Section Container */
+.account-management-section {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Heading */
+.account-management-section h1 {
+  font-size: 28px;
+  color: #27ae60;
+  margin-bottom: 15px;
+}
+
+/* Paragraph */
+.account-management-section p {
+  font-size: 14px;
+  color: #2c3e50;
+  margin-bottom: 25px;
+}
+
+/* Buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Common button styling */
+.action-buttons button {
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+/* Specific buttons */
+.action-buttons button#requestClosure {
+  background-color: #e74c3c; /* Red for closure */
+  color: white;
+}
+.action-buttons button#requestClosure:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+.action-buttons button#deactivateAccount {
+  background-color: #f39c12; /* Orange for deactivation */
+  color: white;
+}
+.action-buttons button#deactivateAccount:hover {
+  background-color: #d35400;
+  transform: scale(1.05);
+}
+
+/* Add Another Factory Button */
+.action-buttons button#addAnotherFactory {
+  background-color: #27ae60; /* Green for adding factory */
+  color: white;
+}
+.action-buttons button#addAnotherFactory:hover {
+  background-color: #1e8449;
+  transform: scale(1.05);
+}
+
+
+/* Back Button */
+.back-btn {
+  width: 35px;       
+  height: 35px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  transition: transform 0.2s ease;
+}
+.back-btn:hover {
+  transform: scale(1.1);
+}

@@ -1,0 +1,154 @@
+/* ✅ Step 1: Background image for login page */
+body.login-page {
+  background:url("/static/factory/images/loginimg.jpg") no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ✅ Login container (center box) */
+.login-container form {
+  background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  width: 350px;
+  box-sizing: border-box;
+  position: relative;
+}
+/* Profile icon circle */
+form::before {
+  content: "👤";
+  position: absolute;
+  top: -30px;
+  left: calc(50% - 25px);
+  background: #e0f7ef;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 30px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+/* Heading */
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Input fields */
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px 10px 10px 40px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-size: 20px;
+}
+
+input[type="email"] {
+  background-image: url('https://img.icons8.com/ios-filled/50/000000/user.png');
+}
+input[type="password"] {
+  background-image: url('https://img.icons8.com/ios-filled/50/000000/lock-2.png');
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3aafa9;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #379e9e;
+}
+
+/* Options row */
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Register link */
+.register {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.register a {
+  text-decoration: none;
+  color: #3aafa9;
+}
+
+.register a:hover {
+  text-decoration: underline;
+}
+
+.back-btn {
+  display: block;          /* make it take full width */
+  width: fit-content;      /* only as wide as the text */
+  margin: 20px auto;       /* top/bottom 20px, horizontally centered */
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #3aafa9;
+  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid #3aafa9;
+  border-radius: 5px;
+  text-align: center;      /* just in case */
+}
+
+.back-btn:hover {
+  background-color: #3aafa9;
+  color: white;
+  text-decoration: none;
+}
+/* ✅ Messages (error/success) */
+ul.messages {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 15px;
+}
+
+ul.messages li {
+  padding: 10px 15px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+ul.messages li.error {
+  background-color: #ffcccc;
+  color: #a94442;
+  border: 1px solid #a94442;
+}
+
+ul.messages li.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #155724;
+}
+
+ul.messages li.info {
+  background-color: #cce5ff;
+  color: #004085;
+  border: 1px solid #004085;
+}

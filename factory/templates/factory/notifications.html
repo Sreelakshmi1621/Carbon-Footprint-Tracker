@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications — Factory Owner</title>
+  <link rel="stylesheet" href="{% static 'factory/css/notification.css' %}">
+</head>
+<body>
+
+  <!-- Back button -->
+<form action="{% url 'factory_dashboard' %}" method="get" style="display:inline;">
+    <button type="submit" class="back-btn">
+        <img src="{% static 'factory/images/homepic.png' %}" alt="Back" />
+    </button>
+</form>
+
+  <main class="notification-area">
+    <header>
+      <h1>Notifications</h1>
+      <p class="muted">Stay updated: Admin messages and important factory alerts appear here.</p>
+
+      <!-- Filter buttons -->
+      <div class="filters">
+        <button onclick="filterNotifications('all')">All</button>
+        <button onclick="filterNotifications('unread')">Unread</button>
+        <button onclick="filterNotifications('read')">Read</button>
+        <button onclick="markAllAsRead()">Mark All as Read</button>
+      </div>
+    </header>
+
+    <ul class="notification-list" id="notificationList">
+      {% for notif in notifications %}
+        <li class="notification {% if not notif.is_read %}unread{% else %}read{% endif %} {{ notif.priority }}-priority" 
+            data-id="{{ notif.id }}" onclick="showMessage(this)">
+          <div class="card-header">
+            <span class="icon">{% if notif.priority == 'high' %}⚠️{% elif notif.priority == 'medium' %}📋{% else %}✅{% endif %}</span>
+            <h3 class="title">{{ notif.title }}</h3>
+            <span class="priority-label">{% if notif.is_read %}Read{% else %}{{ notif.priority|title }}{% endif %}</span>
+          </div>
+          <p class="message">{{ notif.message }}</p>
+          <span class="time">{{ notif.created_at|date:"d M Y, h:i A" }}</span>
+          <button class="delete-btn" onclick="deleteNotification(event,this)">×</button>
+        </li>
+      {% empty %}
+        <p class="muted">No notifications available.</p>
+      {% endfor %}
+    </ul>
+  </main>
+
+<script>
+function showMessage(item) {
+  const msg = item.querySelector(".message").innerText;
+  alert(msg);
+
+  // Only mark as read if unread
+  if(item.classList.contains("unread")) {
+    const notifId = item.dataset.id;
+    
+    fetch("{% url 'mark_notification_read' %}", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `notif_id=${notifId}`
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.status === "success") {
+        item.classList.remove("unread");
+        item.classList.add("read");
+        item.querySelector(".priority-label").innerText = "Read";
+      } else {
+        console.error(data.message);
+      }
+    })
+    .catch(err => console.error(err));
+  }
+}
+
+function deleteNotification(event, btn) {
+  event.stopPropagation(); // prevent click on li
+  const notifId = btn.parentElement.dataset.id;
+
+  fetch("{% url 'delete_notification' %}", {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": "{{ csrf_token }}",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: `notif_id=${notifId}`
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.status === "success") {
+      btn.parentElement.remove();
+    } else {
+      console.error(data.message);
+    }
+  })
+  .catch(err => console.error(err));
+}
+
+function filterNotifications(type) {
+  const items = document.querySelectorAll(".notification");
+  items.forEach(item => {
+    if(type === "all") item.style.display = "block";
+    else if(type === "unread" && item.classList.contains("unread")) item.style.display = "block";
+    else if(type === "read" && item.classList.contains("read")) item.style.display = "block";
+    else item.style.display = "none";
+  });
+}
+
+// Mark all visible as read
+function markAllAsRead() {
+  const items = document.querySelectorAll(".notification.unread");
+  items.forEach(item => showMessage(item));
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Usage — Factory Owner</title>
+  <link rel="stylesheet" href="{% static 'factory/css/add_usage.css' %}">
+</head>
+
+<body>
+  <!-- Back Button -->
+<a href="{% url 'factory_dashboard' %}">
+  <img src="{% static 'factory/images/homepic.png' %}" alt="Back" class="back-btn">
+</a>
+
+  <div class="form-container">
+    <h1>Add Usage</h1>
+
+    <!-- Messages inside the form -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Add Usage Form -->
+    <form id="usageForm" method="POST" action="{% url 'add_usage' %}">
+      {% csrf_token %}
+
+      <!-- Asset Dropdown -->
+      <label for="asset">Select Asset <span style="color:red">*</span></label>
+      <select id="asset" name="asset_id" required>
+        <option value="">-- Select Asset --</option>
+        {% for asset in assets %}
+          <option value="{{ asset.id }}" data-type="{{ asset.asset_type }}" data-fuel="{{ asset.fuel_type }}">
+            {{ asset.name }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <!-- Asset Type (auto-filled) -->
+      <label for="assetType">Asset Type</label>
+      <input type="text" id="assetType" name="assetType" readonly placeholder="Auto-filled">
+
+      <!-- Fuel Type (auto-filled) -->
+      <label for="fuelType">Fuel Type</label>
+      <input type="text" id="fuelType" name="fuelType" readonly placeholder="Auto-filled">
+
+      <!-- Consumption -->
+      <label for="consumption">Consumption <span style="color:red">*</span></label>
+      <input type="number" id="consumption" name="usage_amount" placeholder="Enter consumption value" min="0" step="any" required>
+
+      <!-- Date -->
+      <label for="usageDate">Date <span style="color:red">*</span></label>
+      <input type="date" id="usageDate" name="date" required>
+
+      <!-- Submit Button -->
+      <div class="form-buttons">
+        <button type="submit">Add Usage</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Auto-fill Asset Type and Fuel Type based on selected asset
+    const assetSelect = document.getElementById('asset');
+    const assetTypeInput = document.getElementById('assetType');
+    const fuelTypeInput = document.getElementById('fuelType');
+
+    assetSelect.addEventListener('change', function() {
+      const selected = assetSelect.selectedOptions[0];
+      assetTypeInput.value = selected.dataset.type || '';
+      fuelTypeInput.value = selected.dataset.fuel || '';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory Selection</title>
+    <link rel="stylesheet" href="{% static 'factory/css/factory_selection.css' %}">
+</head>
+<body>
+
+    <!-- Back Image (top-left) -->
+    <a href="{% url 'homepage' %}" class="back-link">
+        <img src="{% static 'factory/images/homepic.png' %}" alt="Back to Login" class="back-image">
+    </a>
+
+    <div class="selection-container">
+        <h2>Select Your Factory</h2>
+
+        {% for factory in factories %}
+        <div class="factory-card">
+            <h3>{{ factory.name }}</h3>
+            <p>Factory Type: {{ factory.factory_type }}</p>
+            <form action="{% url 'set_active_factory' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="factory_id" value="{{ factory.id }}">
+                <button type="submit">Select</button>
+            </form>
+        </div>
+        {% empty %}
+        <p>No factories found. Please add a factory first.</p>
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>

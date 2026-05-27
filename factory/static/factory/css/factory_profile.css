@@ -1,0 +1,174 @@
+/* === Factory Profile Page Styles === */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('../images/loginimg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+/* Page Heading */
+.page-heading, h2 {
+  text-align: center;
+  margin: 30px 0 20px 0;
+  font-size: 28px;
+  color: #27ae60;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Back Button */
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.back-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Form Container */
+.form-container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  padding: 25px 30px;
+  max-width: 600px;
+  width: 95%;
+  margin: 50px auto 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+/* Increase spacing between form fields */
+.form-container label {
+  margin-top: 10px;
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select {
+  margin-bottom: 18px; /* increase gap below each field */
+}
+
+
+/* Profile Picture */
+.profile-pic-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.profile-pic-container input[type="file"] {
+  display: none; /* hide actual input */
+}
+.profile-pic-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; /* round image */
+  object-fit: cover;
+  cursor: pointer;
+  border: 3px solid #27ae60;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.profile-pic-container img:hover {
+  transform: scale(1.05);
+  border-color: #1e8449;
+}
+
+/* Wrapper for profile pic */
+.profile-pic-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Pen Icon Overlay */
+.edit-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: #27ae60;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.edit-icon:hover {
+  background-color: #1e8449;
+  transform: scale(1.1);
+}
+
+
+/* Form Fields */
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: #27ae60;
+  box-shadow: 0 0 5px rgba(39,174,96,0.3);
+  outline: none;
+}
+
+/* Action Button */
+.button-group, .form-actions {
+  margin-top: 20px;
+}
+.button-group button, .form-actions button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #27ae60;
+  color: white;
+  font-weight: bold;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.button-group button:hover, .form-actions button:hover {
+  background-color: #1e8449;
+  transform: scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .form-container {
+    padding: 15px;
+  }
+}
+
+.success-message {
+    background-color: #2cb663;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}

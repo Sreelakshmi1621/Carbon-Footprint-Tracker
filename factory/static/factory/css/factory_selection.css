@@ -1,0 +1,112 @@
+/* ===========================
+   General Page Styling
+=========================== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #dbf6b8; /* light green background */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* ===========================
+   Back Button (Top-left)
+=========================== */
+.back-link {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.back-image {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.back-image:hover {
+    transform: scale(1.1);
+}
+
+/* ===========================
+   Selection Container (Center)
+=========================== */
+.selection-container {
+    max-width: 500px;
+    margin: 100px auto;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-top: 6px solid #16a34a; /* green accent line */
+    text-align: center;
+}
+
+.selection-container h2 {
+    color: #166534; /* dark green */
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+/* ===========================
+   Individual Factory Cards
+=========================== */
+.factory-card {
+    background-color: #f0fdf4; /* very light green */
+    border: 1px solid #a7f3d0;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.factory-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.factory-card h3 {
+    margin: 0 0 8px 0;
+    color: #065f46; /* medium green */
+    font-size: 18px;
+}
+
+.factory-card p {
+    margin: 0 0 12px 0;
+    color: #065f46;
+    font-size: 14px;
+}
+
+/* ===========================
+   Select Button
+=========================== */
+.factory-card button {
+    background-color: #16a34a; /* green */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.factory-card button:hover {
+    background-color: #15803d; /* darker green */
+    transform: scale(1.05);
+}
+
+/* ===========================
+   Responsive Adjustments
+=========================== */
+@media (max-width: 600px) {
+    .selection-container {
+        margin: 60px 15px;
+        padding: 20px;
+    }
+
+    .factory-card {
+        padding: 15px;
+    }
+}

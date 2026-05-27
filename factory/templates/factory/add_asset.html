@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Add Asset — Factory Owner</title>
+
+  <!-- Shared dashboard styles -->
+  <link rel="stylesheet" href="{% static 'factory/css/factory_dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'factory/css/add-asset.css' %}">
+</head>
+
+<body>
+  <main class="main-area">
+
+    <!-- Back button to dashboard -->
+    <a href="{% url 'factory_dashboard' %}" class="back-button">
+      <img src="{% static 'factory/images/homepic.png' %}" alt="Back" class="back-icon">
+    </a>
+
+    <div class="add-asset-container">
+      <header class="page-header">
+        <h1>Register Your Asset</h1>
+        <p class="muted">Track assets of your factory to monitor energy usage and emissions.</p>
+      </header>
+
+      <!-- Form -->
+<form id="addAssetForm" class="asset-form" method="POST" action="{% url 'add_asset' %}">
+    {% csrf_token %}
+        {% if messages %}
+           <div class="messages">
+             {% for message in messages %}
+           <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+            </div>
+     {% endif %}
+
+
+    <label for="assetName">Asset Name <span style="color:red">*</span></label>
+    <input id="assetName" name="assetName" type="text" placeholder="e.g. Boiler #1" required>
+
+    <label for="assetType">Asset Type <span style="color:red">*</span></label>
+    <select id="assetType" name="assetType" required>
+        <option value="">-- Select type --</option>
+        <option value="machine">Machine</option>
+        <option value="other">Other</option>
+    </select>
+
+    <label for="fuelType">Energy / Fuel Type <span style="color:red">*</span></label>
+    <select id="fuelType" name="fuelType" required>
+        <option value="">-- Select energy/fuel --</option>
+        <option value="electricity">Electricity</option>
+        <option value="diesel">Diesel</option>
+        <option value="petrol">Petrol</option>
+        <option value="lpg">LPG</option>
+        <option value="natural-gas">Natural Gas</option>
+        <option value="other">Other</option>
+    </select>
+
+    <label for="unit">Unit <span style="color:red">*</span></label>
+    <select id="unit" name="unit" required>
+        <option value="kwh">kWh (electricity)</option>
+        <option value="litre">Litre (fuel)</option>
+        <option value="m3">m³</option>
+        <option value="other">Other</option>
+    </select>
+
+    <div class="form-actions">
+        <button type="submit" id="submitBtn">Add Asset</button>
+        <button type="button" id="cancelBtn">Cancel</button>
+    </div>
+</form>
+    </div>
+  </main>
+
+  <script>
+    // Cancel button redirects back to dashboard
+    document.getElementById('cancelBtn').addEventListener('click', function() {
+      window.location.href = "{% url 'factory_dashboard' %}";
+    });
+  </script>
+</body>
+</html>

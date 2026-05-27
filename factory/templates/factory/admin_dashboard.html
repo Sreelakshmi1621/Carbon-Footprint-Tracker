@@ -1,0 +1,172 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="{% static 'factory/css/admin_dashboard.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <img src="{% static 'factory/images/logo.png' %}" alt="Project Logo" class="project-logo">
+      <h2>Carbon Footprint Tracker</h2>
+    </div>
+
+    <div class="header-right">
+      <!-- Home Icon -->
+      <a href="{% url 'login' %}" class="home-btn">
+        <i class="fas fa-home"></i>
+      </a>
+
+      <!-- Notification Icon -->
+<a href="{% url 'admin_notifications' %}" class="notification">
+  <i class="fas fa-bell"></i>
+  {% if active_notifications > 0 %}
+    <span class="notif-count">{{ active_notifications }}</span>
+  {% endif %}
+</a>
+
+      <!-- Profile Dropdown -->
+<div class="profile-dropdown">
+<img src="{{ profile.profile_picture.url }}" 
+     alt="Profile" 
+     class="header-profile-pic" 
+     id="header-profile-pic" onclick="toggleDropdown()">
+
+    <ul class="dropdown-menu" id="profile-dropdown-menu">
+        <li><a href="{% url 'admin_profile' %}">View Profile</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+</div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <ul class="menu">
+      <li><a href="javascript:void(0)" onclick="showSection('overview')"></i> 🏠 Overview</a></li>
+      <li><a href="{% url 'manage_factories' %}"></i>🏭 Manage Factories</a></li>
+      <li><a href="{% url 'admin_reports' %}"></i> 📊 Reports</a></li>
+      <li><a href="{% url 'admin_notifications' %}"></i> 📢 Announcements</a></li>
+      <li><a href="{% url 'admin_profile' %}"></i>👤Admin Profile</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <section>
+      <!-- Welcome Admin Card -->
+ <div class="card welcome-card">
+  <img src="{% static 'factory/images/sustainable.jpg' %}" alt="Welcome Background" class="welcome-img">
+  <div class="welcome-text">
+    <h2>Welcome Admin!</h2>
+    <p>Here’s a quick snapshot of the system.</p>
+  </div>
+</div>
+
+      <!-- Dashboard Cards -->
+      <div class="cards">
+        <div class="card">
+          <img src="{% static 'factory/images/total_factories.jpg' %}" alt="Total Factories" class="card-img">
+          <h4>Total Factories</h4>
+          <p>{{ total_factories }}</p>
+
+        </div>
+
+        <div class="card">
+          <img src="{% static 'factory/images/active_notification.png' %}" alt="Active Notifications" class="card-img">
+          <h4>Active Notifications</h4>
+          <p>{{ active_notifications }}</p>
+        </div>
+
+        <div class="card">
+          <img src="{% static 'factory/images/recent_reports.png' %}" alt="Recent Reports" class="card-img">
+          <h4>Recent Reports</h4>
+          <p>12</p>
+        </div>
+
+        <div class="card">
+          <img src="{% static 'factory/images/compliance_status.png' %}" alt="Compliance Status" class="card-img">
+          <h4>Compliance Status</h4>
+         <p>{{ compliance_status }}</p>
+        </div>
+
+        <div class="card">
+          <img src="{% static 'factory/images/emissions_summary.png' %}" alt="Emissions Summary" class="card-img">
+          <h4>Emissions Summary</h4>
+          <p>{{ emissions_summary }} tons CO₂</p>
+        </div>
+      </div>
+    <div class="analytics-cards">
+      <div class="chart-card">
+        <h4>Emissions Over Time</h4>
+        <canvas id="emissionsChart"></canvas>
+      </div>
+    </div>
+  </section>
+  </main>
+
+<script>
+function toggleDropdown() {
+    document.getElementById("profile-dropdown-menu").classList.toggle("show");
+}
+
+// Close dropdown if clicked outside
+window.onclick = function(event) {
+    if (!event.target.matches('#header-profile-pic')) {
+        var dropdowns = document.getElementsByClassName("dropdown-menu");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+</script>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="chart-card" id="line-chart">
+  <h4>Emissions Over Time</h4>
+  <canvas id="emissionsChart"></canvas>
+</div>
+
+<script>
+  // ✅ Get data from Django context safely
+  const monthlyEmissions = JSON.parse('{{ monthly_emissions|safe|escapejs }}');
+  const ctx = document.getElementById('emissionsChart').getContext('2d');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      datasets: [{
+        label: 'CO₂ Emissions (tons)',
+        data: monthlyEmissions,
+        borderColor: '#dd0303',
+        backgroundColor: 'rgba(221, 3, 3, 0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

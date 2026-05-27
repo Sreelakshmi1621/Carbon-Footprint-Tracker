@@ -1,0 +1,179 @@
+/* ===== General Body Styling ===== */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f9;
+
+    /* Add background image */
+    background-image: url('../images/sustainable.jpg'); /* replace with your path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.report-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+/* Back button */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.back-btn img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+/* Page heading */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2e7d32; /* green heading */
+}
+
+/* Filter section */
+.report-filters {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.report-filters label {
+    font-weight: bold;
+    color: #2e7d32; /* green label */
+}
+
+.report-filters select,
+.report-filters input {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Buttons */
+.report-filters button {
+    padding: 7px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2e7d32; /* dark green */
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.report-filters button:hover {
+    background-color: #1b5e20;
+}
+
+/* Report Table */
+.report-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.report-table th, .report-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+.report-table th {
+    background-color: #388e3c; /* green header */
+    color: white;
+}
+
+.report-table tr:nth-child(even) {
+    background-color: #e8f5e9;
+}
+
+/* Highlight emission column text in green */
+.report-table td.emission {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+/* Top Emitters Section */
+.top-emitters {
+    margin-top: 30px;
+}
+
+.top-emitters ul {
+    list-style: none;
+    padding: 0;
+}
+
+.top-emitters li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 5px 0;
+}
+
+/* Rank circles */
+.rank {
+    width: 28px;
+    height: 28px;
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Rank colors */
+.top-emitters li:nth-child(1) .rank {
+    background-color: #e53935; /* red */
+}
+
+.top-emitters li:nth-child(2) .rank {
+    background-color: #fb8c00; /* orange */
+}
+
+.top-emitters li:nth-child(3) .rank {
+    background-color: #59a502; /* light orange */
+    color: #fffcfc; /* dark text for contrast */
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .report-filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .report-table th, .report-table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .report-filters select,
+    .report-filters input,
+    .report-filters button {
+        width: 100%;
+    }
+
+    .rank {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+}

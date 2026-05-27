@@ -1,0 +1,340 @@
+/* Reset defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f4f6f9;
+    color: #333;
+    overflow: hidden; /* prevent full body scroll */
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #537d5d; /* dark green */
+    color: white;
+    padding: 12px 20px;
+    height: 64px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.project-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Home button */
+.home-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.home-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Notification icon */
+.notification {
+    position: relative;
+}
+.notification i {
+    font-size: 20px;
+    color: #fafdfd;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.notification i:hover {
+    color: #d1f2eb;
+}
+.notif-count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background-color: #e74c3c;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+/* Profile Dropdown Container */
+.profile-dropdown {
+    position: relative;       /* positions dropdown relative to picture */
+    display: flex;
+    align-items: center;      /* vertical align in header */
+}
+
+/* Profile picture in header */
+.header-profile-pic {
+    width: 35px;             /* smaller size */
+    height: 35px;            
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ffffff; /* optional: white border */
+    transition: transform 0.2s;
+}
+.header-profile-pic:hover {
+    transform: scale(1.1);  /* small zoom on hover */
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 45px;             /* appears just below picture */
+    right: 0;
+    background-color: white;
+    min-width: 140px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    z-index: 1000;
+}
+
+.dropdown-menu li {
+    list-style: none;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 15px;
+    color: #03641b;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #a2d698;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #9ebc8a; /* medium green */
+    color: white;
+    padding: 20px 0;
+    flex-shrink: 0;
+    height: calc(100vh - 64px);
+    position: fixed;
+    top: 64px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar .menu {
+    list-style: none;
+    padding: 0;
+}
+.sidebar .menu li {
+    margin: 10px 0;
+}
+.sidebar .menu li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+    color: rgb(8, 8, 8);
+    text-decoration: none;
+    transition: background 0.3s;
+    border-radius: 4px;
+}
+.sidebar .menu li a:hover {
+    background-color: #5e8968;
+}
+
+/* Main content */
+.main-content {
+    margin-left: 220px;
+    margin-top: 64px;
+    padding: 20px 30px;
+    flex-grow: 1;
+    min-height: calc(100vh - 64px);  /* ensure it can scroll */
+    overflow-y: auto;                /* scroll main content only */
+}
+.main-content section {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* Welcome Admin Card */
+.welcome-card {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    height: 400px;       /* adjust as needed */
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.welcome-card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* makes the image fill the card */
+    display: block;
+}
+
+.welcome-card .welcome-text {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: rgb(11, 11, 11);
+    text-shadow: 1px 1px 5px rgba(252, 246, 246, 0.6);
+    z-index: 2;         /* ensures text is above image */
+}
+
+.welcome-card .welcome-text h2 {
+    font-size: 26px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.welcome-card .welcome-text p {
+    font-size: 16px;
+}
+
+/* Dashboard Cards */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin: 0;
+}
+.card {
+    background: #ffffff;
+    padding: 25px 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+.card .card-img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+.card h4 {
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-size: 18px;
+}
+.card p {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 600px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 15px;
+    }
+    .header-right {
+        gap: 10px;
+    }
+    .welcome-card {
+        height: 250px;
+    }
+}
+/* Chart Card Container */
+/* Charts Section */
+.analytics-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 25px;
+    color: #037728;
+
+}
+
+.chart-card {
+    height: auto;          /* Let it grow naturally */
+    max-height: none;      /* Remove max height limit */
+    padding: 20px;
+}
+.chart-card canvas {
+    width: 100% !important;
+    height: 400px !important;  /* reasonable default */
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .chart-card canvas { height: 300px !important; }
+    #line-chart canvas { height: 400px !important; }
+}
+
+@media (max-width: 600px) {
+    .chart-card canvas { height: 200px !important; }
+    #line-chart canvas { height: 250px !important; }
+}
+
+canvas {
+  width: 100% !important;
+  height: 400px !important;
+}

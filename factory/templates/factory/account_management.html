@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Management</title>
+  <link rel="stylesheet" href="{% static 'factory/css/account_management.css' %}">
+</head>
+<!-- Back Button as Image -->
+<img src="{% static 'factory/images/homepic.png' %}" alt="Back" class="back-btn" onclick="window.history.back()">
+
+<body>
+
+  <section class="account-management-section">
+    <h1>Account Management</h1>
+    <p>Use the options below to manage your account. Requests will be sent to the admin.</p>
+
+    <div class="action-buttons">
+      <button id="requestClosure">Request Account Closure</button>
+      <button id="deactivateAccount">Deactivate Account</button>
+      <button id="addAnotherFactory">Add Another Factory</button>
+
+    </div>
+  </section>
+
+  <script src="{% static 'factory/js/account_management.js' %}"></script>
+  
+</body>
+</html>
+ 

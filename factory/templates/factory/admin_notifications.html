@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Notifications</title>
+    <link rel="stylesheet" href="{% static 'factory/css/admin_notifications.css' %}">
+</head>
+<body>
+    <div class="main-content">
+        <!-- Back Button Image -->
+        <a href="{% url 'admin_dashboard' %}" class="back-btn">
+            <img src="{% static 'factory/images/homepic.png' %}" alt="Back" />
+        </a>
+
+        <!-- Header -->
+        <div class="header-row">
+             Send Alert 
+        </div>
+
+        <!-- Success or Error Messages -->
+
+        <!-- Display error if any -->
+        {% if error %}
+            <p style="color:red; text-align:center;">{{ error }}</p>
+        {% endif %}
+
+        <!-- Notification Form -->
+        <div class="notification-form">
+            <form method="POST">
+                {% csrf_token %}
+
+{% if messages %}
+  <div class="alert-messages">
+    {% for message in messages %}
+      {% if 'success' in message.tags %}
+        <div class="alert-success">{{ message }}</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
+
+
+                <!-- Send To -->
+                <div class="form-group">
+                    <label for="send-to">Send To</label>
+                    <select id="send-to" name="send_to">
+                        <option value="all">All Factories</option>
+                        {% for factory in factories %}
+                            <option value="{{ factory.id }}">{{ factory.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Priority -->
+                <div class="form-group">
+                    <label for="priority">Priority Level</label>
+                    <select id="priority" name="priority">
+                        <option value="high">High Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="low">Low Priority</option>
+                    </select>
+                </div>
+
+                <!-- Subject -->
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="Enter notification subject">
+                </div>
+
+                <!-- Message -->
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Enter your message here..."></textarea>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group" style="display:flex; gap:10px;">
+                    <button type="submit" class="send-btn">Send Notification</button>
+                   <a href="{% url 'admin_dashboard' %}" class="draft-btn">Cancel</a>
+                        
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Recent Notifications -->
+        <div class="recent-notifications">
+            <h3>Recent Notifications</h3>
+            <div id="notifications-list">
+                {% for notif in notifications %}
+                    <div class="notif-card">
+                        <div class="notif-header">
+                            <div>
+                                <h4>{{ notif.title }}</h4>
+                                <p class="notif-recipients">
+                                    Sent to: {% if notif.factory_owner %}{{ notif.factory_owner.factories.first.name }}{% else %}All{% endif %}
+                                </p>
+                                <p class="notif-date">{{ notif.created_at|date:"Y-m-d" }}</p>
+                            </div>
+           <span class="notif-priority {{ notif.priority }}">
+              {{ notif.priority|capfirst }}
+           </span>
+                                {{ notif.priority|capfirst }}
+                            </span>
+                        </div>
+<p class="notif-message">{{ notif.message }}</p>
+
+<!-- 🗑 Delete Button -->
+<form action="{% url 'admin_delete_notification' notif.id %}" method="post" style="margin-top:10px;">
+  {% csrf_token %}
+  <button type="submit" class="delete-btn">Delete</button>
+</form>
+                    </div>
+                {% empty %}
+                    <p>No notifications yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

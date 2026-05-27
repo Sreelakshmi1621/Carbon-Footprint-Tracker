@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Reports</title>
+    <link rel="stylesheet" href="{% static 'factory/css/admin_reports.css' %}">
+</head>
+<body>
+    <div class="report-container">
+
+        <!-- Back button -->
+        <a href="{% url 'admin_dashboard' %}" class="back-btn">
+            <img src="{% static 'factory/images/homepic.png' %}" alt="Back">
+        </a>
+
+        <h1>Emission Reports</h1>
+
+        <!-- Filter Section -->
+        <form method="get" class="report-filters">
+            <label for="factory">Factory:</label>
+            <select name="factory" id="factory">
+                <option value="all" {% if selected_factory == "all" %}selected{% endif %}>All Factories</option>
+                {% for factory in factories %}
+                    <option value="{{ factory.id }}" {% if selected_factory|stringformat:"s" == factory.id|stringformat:"s" %}selected{% endif %}>{{ factory.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="start_date">Start Date:</label>
+            <input type="date" name="start_date" id="start_date" value="{{ start_date }}">
+
+            <label for="end_date">End Date:</label>
+            <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
+
+            <button type="submit">Generate</button>
+
+            {% if report_data %}
+              <button type="submit" formaction="{% url 'admin_reports_pdf' %}" formmethod="get">Download PDF</button>
+            {% endif %}
+        </form>
+
+        {% if report_data %}
+        <!-- Report Table -->
+        <div class="report-table">
+            <h2>Detailed Report</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Factory</th>
+                        <th>Date</th>
+                        <th>Total Emission (kg CO₂)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in report_data %}
+                    <tr>
+                        <td>{{ row.asset__factory__name }}</td>
+                        <td>{{ row.date }}</td>
+                        <td>{{ row.total_emission|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Top Emitters -->
+        <div class="top-emitters">
+            <h2>Top 3 Emitters</h2>
+            <ul>
+                {% for item in top_emitters %}
+                    <li>
+                        <span class="rank">{{ forloop.counter }}</span>
+                        <span class="factory-name">{{ item.asset__factory__name }}</span>
+                        <span class="emission">{{ item.total_emission|floatformat:2 }} kg CO₂</span>
+                    </li>
+                {% empty %}
+                    <li>No data available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

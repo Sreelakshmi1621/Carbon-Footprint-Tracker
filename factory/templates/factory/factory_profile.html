@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factory Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'factory/css/factory_profile.css' %}">
+</head>
+<body>
+
+  <!-- Back button -->
+  <a href="{% url 'factory_dashboard' %}" class="back-link">
+    <img src="{% static 'factory/images/homepic.png' %}" class="back-btn" alt="Back">
+  </a>
+ 
+
+  <div class="form-container">
+    <h2>Factory Profile</h2>
+
+    <!-- Corrected Form -->
+<form id="factoryProfileForm" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <!-- Success / Error Messages inside the form -->
+{% if messages %}
+  <div class="form-messages">
+    {% for message in messages %}
+      <p class="success-message">{{ message }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+
+
+      <!-- Profile Picture -->
+<div class="profile-pic-container">
+  <div class="profile-pic-wrapper">
+    <label for="factoryLogo">
+      <img id="logoPreview" src="{% if factory.profile_picture %}{{ factory.profile_picture.url }}{% else %}{% static 'factory/images/default_profile.png' %}{% endif %}" alt="Factory Logo">
+      <div class="edit-icon">
+        <i class="fa fa-pen"></i>
+      </div>
+    </label>
+  </div>
+  <input type="file" id="factoryLogo" name="profile_picture" accept="image/*">
+</div>
+
+      <!-- Form Fields with corrected names -->
+      <label for="factoryName">Factory Name:</label>
+      <input type="text" id="factoryName" name="name" value="{{ factory.name }}" required>
+
+      <label for="factoryType">Factory Type:</label>
+      <select id="factoryType" name="factory_type" required>
+        {% for option in factory_types %}
+          <option value="{{ option }}" {% if factory.factory_type == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="regNumber">Registration/License Number:</label>
+      <input type="text" id="regNumber" name="registration_number" value="{{ factory.registration_number }}" required>
+
+      <label for="estYear">Established Year:</label>
+      <input type="number" id="estYear" name="established_year" value="{{ factory.established_year }}" required>
+
+      <label for="address">Address:</label>
+      <textarea id="address" name="address" rows="3" required>{{ factory.address }}</textarea>
+
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city" value="{{ factory.city }}" required>
+
+      <label for="country">Country:</label>
+      <input type="text" id="country" name="country" value="{{ factory.country }}" required>
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone_number" value="{{ factory.phone_number }}" pattern="[0-9]{10}" placeholder="Enter 10-digit number" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" value="{{ factory.email }}" readonly>
+
+      <div class="button-group">
+        <button type="submit">Update Profile</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- JS: Profile Picture Preview -->
+  <script>
+    const factoryLogoInput = document.getElementById('factoryLogo');
+    const logoPreview = document.getElementById('logoPreview');
+
+    factoryLogoInput.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          logoPreview.src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+
+</body>
+</html>
